@@ -4,24 +4,22 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    static int add = 0;
+    private int size = 0;
     Resume[] storage = new Resume[10000];
 
     void clear() {
-        for (int i = 0; i < add; i++) {
-            storage[i] = null;
-            add = 0;
-        }
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     void save(Resume r) {
-        storage[add]=r;
-        add++;
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
-        for (int i = 0; i < add; i++) {
-            if (storage[i].uuid.equals(uuid)){
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid.equals(uuid)) {
                 return storage[i];
             }
         }
@@ -29,18 +27,18 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        for (int i = 0; i < add; i++) {
-            if (storage[i].uuid==uuid){
-                storage[i]=null;
-                for (int j = 0; j < add; j++) {
-                    if (storage[j]==null){
-                        storage[add]=storage[j+1];
-                        storage[j+1]=storage[j];
-                        storage[j]=storage[add];
-                        storage[add]=null;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].uuid == uuid) {
+                storage[i] = null;
+                for (int j = 0; j < size; j++) {
+                    if (storage[j] == null) {
+                        storage[size] = storage[j + 1];
+                        storage[j + 1] = storage[j];
+                        storage[j] = storage[size];
+                        storage[size] = null;
                     }
                 }
-                add--;
+                size--;
             }
         }
     }
@@ -49,10 +47,10 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return Arrays.copyOf(storage,add);
+        return Arrays.copyOf(storage, size);
     }
 
     int size() {
-        return add;
+        return size;
     }
 }
